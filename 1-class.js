@@ -63,8 +63,10 @@ class Hero {
 	doSomething() {
 		if (this.isEvil) {
 			console.log("Destroy a building")
+			return "bad"
 		} else {
 			console.log("save someone")
+			return "good"
 		}
 	}
 }
@@ -82,3 +84,49 @@ superman.attack(spiderman)
 spiderman.attack(superman)
 
 console.log(spiderman.strength, superman.strength)
+
+class HeroValidationError extends Error {
+	constructor(message) {
+		super(message)
+		this.name = "HeroValidationError"
+	}
+}
+
+class SuperHero extends Hero {
+	constructor(name, secretIdentity, strength = 50, superPower) {
+		if (!name.startsWith("Super")) {
+			throw new HeroValidationError("Your name must start with super")
+		}
+		super(name, secretIdentity, strength)
+		// new Hero(name, secretIdentity, strength)
+		this.superPower = superPower
+	}
+
+	doSomething() {
+		const state = super.doSomething()
+		if (state === "bad") {
+			console.log("Destroy the universe")
+		} else {
+			console.log("Save the whole planet by planting trees")
+		}
+	}
+
+	greet() {
+		if (Math.random() > 0.8) {
+			return `Hey, i am ${this.identity}`
+		} else {
+			return this.secretGreet()
+		}
+	}
+}
+
+const catWoman = new SuperHero("CatWoman", "Selyna Kyle", 125, "Claw Attack")
+
+console.log(catWoman.greet())
+console.log(catWoman.doSomething())
+console.log(catWoman.greet())
+console.log(catWoman.doSomething())
+console.log(catWoman.greet())
+console.log(catWoman.doSomething())
+console.log(catWoman.greet())
+console.log(catWoman.doSomething())
